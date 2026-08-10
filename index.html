@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>twogether.bond — Ciejay &amp; Satiko's travel journal</title>
+<meta name="description" content="A travel blog for two — Ciejay and Satiko document beaches, backroads, and everywhere in between, starting in the Philippines.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --sky-100:#E3F2FD;
+    --sky-300:#90CAF9;
+    --blue-500:#2196F3;
+    --blue-900:#0D47A1;
+    --ink:#0A1F38;
+    --paper:#FFFFFF;
+    --paper-soft:#F6FAFE;
+    --line:rgba(13,71,161,0.18);
+    --shadow-soft: 0 20px 50px -25px rgba(13,71,161,0.35);
+    --shadow-card: 0 14px 34px -18px rgba(10,31,56,0.28);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 10px;
+    --serif: "Fraunces", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  body{
+    margin:0;
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; margin:0; padding:0; }
+  button{ font-family:inherit; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(20px,5vw,48px);
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--blue-500);
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background:var(--blue-500);
+    display:inline-block;
+  }
+
+  h1,h2,h3{ font-family:var(--serif); color:var(--blue-900); margin:0; line-height:1.08; letter-spacing:-0.01em; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    padding:14px 26px;
+    border-radius:999px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{ background:var(--blue-900); color:#fff; box-shadow:var(--shadow-soft); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 22px 40px -18px rgba(13,71,161,0.55); }
+  .btn-ghost{ background:transparent; border-color:var(--blue-900); color:var(--blue-900); }
+  .btn-ghost:hover{ background:var(--blue-900); color:#fff; transform:translateY(-2px); }
+  .btn-light{ background:#fff; color:var(--blue-900); }
+  .btn-light:hover{ transform:translateY(-2px); box-shadow:0 18px 34px -16px rgba(0,0,0,0.35); }
+
+  /* placeholder photo block */
+  .photo-slot{
+    position:relative;
+    border-radius:var(--radius-md);
+    border:2px dashed var(--sky-300);
+    background:
+      repeating-linear-gradient(135deg, rgba(33,150,243,0.06) 0 12px, transparent 12px 24px),
+      var(--sky-100);
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    color:var(--blue-900);
+    font-family:var(--mono);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    overflow:hidden;
+  }
+  .photo-slot span{ padding:14px; font-size:12.5px; opacity:0.75; }
+  .photo-slot::after{
+    content:"📷";
+    position:absolute; top:14px; right:16px; font-size:16px; opacity:.55;
+  }
+
+  /* ============ NAV ============ */
+  header.site{
+    position:sticky; top:0; z-index:80;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px clamp(20px,5vw,48px);
+    max-width:1180px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--serif); font-weight:600; font-size:21px; color:var(--blue-900);
+  }
+  .brand .plane{ display:inline-block; transform:rotate(45deg); font-size:18px; }
+  .brand small{
+    display:block; font-family:var(--mono); font-size:10px; letter-spacing:.14em;
+    color:var(--blue-500); font-weight:600;
+  }
+  .nav-links{ display:flex; align-items:center; gap:32px; }
+  .nav-links a{
+    font-size:14.5px; font-weight:600; color:var(--ink); opacity:.75;
+    position:relative; padding:4px 0;
+  }
+  .nav-links a:hover{ opacity:1; color:var(--blue-500); }
+  .nav-cta{ display:flex; align-items:center; gap:14px; }
+  .burger{
+    display:none; background:none; border:none; cursor:pointer;
+    padding:10px; margin:-10px -10px -10px 0;
+    min-width:44px; min-height:44px;
+    align-items:center; justify-content:center; flex-direction:column;
+  }
+  .burger span{ display:block; width:22px; height:2px; background:var(--blue-900); margin:4px 0; border-radius:2px; transition:transform .25s ease, opacity .25s ease; }
+  .burger[aria-expanded="true"] span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+  .burger[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .burger[aria-expanded="true"] span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    padding:64px 0 40px;
+    background:
+      radial-gradient(60% 60% at 85% 8%, rgba(144,202,249,0.45), transparent 70%),
+      linear-gradient(180deg, var(--sky-100) 0%, #fff 88%);
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero-copy h1{ font-size:clamp(34px,4.6vw,54px); }
+  .hero-copy h1 em{ font-style:italic; color:var(--blue-500); }
+  .hero-copy .eyebrow{ margin-bottom:18px; }
+  .hero-copy p.lede{
+    margin:22px 0 30px; font-size:17.5px; line-height:1.65; color:rgba(10,31,56,0.78); max-width:46ch;
+  }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+  .hero-meta{
+    display:flex; gap:28px; margin-top:38px; flex-wrap:wrap;
+  }
+  .hero-meta div b{ display:block; font-family:var(--serif); font-size:24px; color:var(--blue-900); }
+  .hero-meta div span{ font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:rgba(10,31,56,0.55); }
+
+  /* boarding pass */
+  .pass-wrap{ position:relative; }
+  .boarding-pass{
+    position:relative;
+    background:var(--paper);
+    border-radius:20px;
+    box-shadow:var(--shadow-soft);
+    display:grid;
+    grid-template-columns:1fr 0.62fr;
+    overflow:visible;
+    transform:rotate(1.5deg);
+    transition:transform .4s ease;
+  }
+  .boarding-pass:hover{ transform:rotate(0deg); }
+  .pass-main, .pass-stub{ padding:26px 26px; position:relative; }
+  .pass-main{
+    background:linear-gradient(160deg,#fff, var(--paper-soft));
+    border-radius:20px 0 0 20px;
+  }
+  .pass-stub{
+    background:var(--blue-900);
+    color:#fff;
+    border-radius:0 20px 20px 0;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .pass-divider{
+    position:relative;
+    width:0;
+  }
+  .pass-perf{
+    position:absolute; top:0; bottom:0; left:0;
+    width:0;
+    border-left:2.5px dashed rgba(13,71,161,0.35);
+  }
+  .pass-perf::before, .pass-perf::after{
+    content:"";
+    position:absolute; left:50%; transform:translateX(-50%);
+    width:26px; height:26px; background:var(--sky-100);
+    border-radius:50%;
+  }
+  .pass-perf::before{ top:-13px; }
+  .pass-perf::after{ bottom:-13px; }
+
+  .pass-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+  .pass-brand{ font-family:var(--mono); font-weight:600; font-size:12px; letter-spacing:.14em; color:var(--blue-500); }
+  .pass-brand.on-dark{ color:var(--sky-300); }
+  .pass-tag{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
+    background:var(--sky-100); color:var(--blue-900); padding:5px 10px; border-radius:999px;
+    font-weight:600;
+  }
+  .pass-names{ font-family:var(--serif); font-size:26px; color:var(--blue-900); margin:0 0 20px; line-height:1.15; }
+  .pass-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px 18px; }
+  .pass-field label{ display:block; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:rgba(10,31,56,0.5); margin-bottom:4px; }
+  .pass-field div{ font-family:var(--sans); font-weight:700; font-size:15px; color:var(--ink); }
+  .pass-route{
+    display:flex; align-items:center; gap:10px; margin-top:22px;
+    font-family:var(--serif); font-size:20px; color:var(--blue-900); font-weight:600;
+  }
+  .pass-route .line{ flex:1; height:1px; background:repeating-linear-gradient(90deg, var(--sky-300) 0 6px, transparent 6px 11px); position:relative; }
+  .pass-route .line::after{ content:"✈"; position:absolute; right:0; top:-9px; color:var(--blue-500); font-size:14px; }
+
+  .pass-stub label{ display:block; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:4px; }
+  .pass-stub .val{ font-family:var(--sans); font-weight:700; font-size:15px; margin-bottom:16px; }
+  .barcode{
+    height:34px; margin-top:6px;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,0.85) 0 2px, transparent 2px 4px, rgba(255,255,255,0.5) 4px 6px, transparent 6px 9px);
+    border-radius:3px;
+  }
+  .pass-badge{
+    position:absolute; top:-16px; left:26px;
+    background:var(--blue-500); color:#fff;
+    font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.08em;
+    padding:6px 14px; border-radius:999px; box-shadow:0 10px 20px -8px rgba(33,150,243,0.6);
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:96px 0; position:relative; }
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(28px,3.4vw,40px); margin-top:16px; }
+  .section-head p{ margin-top:16px; font-size:16.5px; line-height:1.65; color:rgba(10,31,56,0.72); }
+  .section-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
+  .section-head.center .eyebrow{ justify-content:center; }
+  .section-head.center .eyebrow::before{ display:none; }
+
+  [data-reveal]{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+  [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
+
+  /* ============ ABOUT ============ */
+  .about{ background:var(--paper-soft); }
+  .about .wrap{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:64px; align-items:center; }
+  .about .photo-slot{ aspect-ratio:4/5; }
+  .about-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:36px; }
+  .about-stats .stat{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius-sm);
+    padding:18px 14px; text-align:center;
+  }
+  .about-stats .stat b{ display:block; font-family:var(--serif); font-size:26px; color:var(--blue-500); }
+  .about-stats .stat span{ font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; color:rgba(10,31,56,0.6); text-transform:uppercase; }
+
+  /* ============ WING BANNER ============ */
+  .wing-banner{
+    position:relative; padding:0; height:340px; overflow:hidden;
+  }
+  .wing-banner img{ width:100%; height:100%; object-fit:cover; }
+  .wing-banner::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(13,71,161,0.82) 0%, rgba(13,71,161,0.25) 55%, rgba(13,71,161,0.05) 100%);
+  }
+  .wing-copy{
+    position:absolute; inset:0; display:flex; align-items:center;
+  }
+  .wing-copy .wrap{ width:100%; }
+  .wing-copy .eyebrow{ color:var(--sky-300); }
+  .wing-copy .eyebrow::before{ background:var(--sky-300); }
+  .wing-copy h2{ color:#fff; font-size:clamp(26px,3.6vw,40px); max-width:15ch; margin-top:14px; }
+
+  /* ============ STORIES ============ */
+  .stories-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; }
+  .postcard{
+    background:#fff; border-radius:var(--radius-md); overflow:hidden;
+    box-shadow:var(--shadow-card);
+    border:1px solid var(--line);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .postcard:hover{ transform:translateY(-8px); box-shadow:0 26px 46px -20px rgba(10,31,56,0.38); }
+  .postcard .thumb{ position:relative; height:220px; overflow:hidden; }
+  .postcard .thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+  .postcard:hover .thumb img{ transform:scale(1.08); }
+  .postcard .stamp{
+    position:absolute; top:14px; right:14px;
+    width:56px; height:56px; border-radius:50%;
+    border:2px dashed rgba(255,255,255,0.85);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-family:var(--mono); font-size:9px; text-align:center; letter-spacing:.05em;
+    text-transform:uppercase; transform:rotate(-12deg);
+    background:rgba(13,71,161,0.28); backdrop-filter:blur(2px);
+  }
+  .postcard .body{ padding:24px; }
+  .postcard .meta{ font-family:var(--mono); font-size:11px; color:var(--blue-500); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  .postcard h3{ font-size:21px; margin-bottom:10px; }
+  .postcard p{ font-size:14.5px; line-height:1.6; color:rgba(10,31,56,0.7); margin:0 0 18px; }
+  .postcard .read{ font-weight:700; font-size:14px; color:var(--blue-900); display:inline-flex; align-items:center; gap:6px; }
+  .postcard .read::after{ content:"→"; transition:transform .25s ease; }
+  .postcard:hover .read::after{ transform:translateX(4px); }
+
+  .stories-foot{ display:flex; justify-content:center; margin-top:48px; }
+
+  /* ============ JOURNEY / STAMPS ============ */
+  .journey{ background:var(--blue-900); color:#fff; }
+  .journey .section-head h2{ color:#fff; }
+  .journey .section-head p{ color:rgba(255,255,255,0.72); }
+  .journey .eyebrow{ color:var(--sky-300); }
+  .journey .eyebrow::before{ background:var(--sky-300); }
+
+  .stamp-row{
+    display:flex; gap:20px; overflow-x:auto; padding:20px 4px 12px;
+    scrollbar-width:thin;
+    -webkit-overflow-scrolling:touch;
+  }
+  .stamp-row::-webkit-scrollbar{ height:6px; }
+  .stamp-row::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.25); border-radius:6px; }
+
+  .stamp{
+    flex:0 0 auto;
+    width:150px; height:150px;
+    border:2px dashed rgba(255,255,255,0.55);
+    border-radius:50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:6px;
+    font-family:var(--mono);
+    background:rgba(255,255,255,0.04);
+    transition:transform .3s ease, background .3s ease, border-color .3s ease;
+  }
+  .stamp:nth-child(odd){ transform:rotate(-6deg); }
+  .stamp:nth-child(even){ transform:rotate(5deg); }
+  .stamp:hover{ background:rgba(255,255,255,0.1); border-color:#fff; transform:rotate(0deg) scale(1.04); }
+  .stamp .name{ font-weight:600; font-size:13px; letter-spacing:.06em; text-transform:uppercase; }
+  .stamp .code{ font-size:20px; font-weight:600; color:var(--sky-300); }
+  .stamp .yr{ font-size:10px; opacity:.6; }
+
+  /* ============ NEWSLETTER ============ */
+  .manifest{ background:var(--sky-100); }
+  .manifest-card{
+    background:#fff; border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    display:grid; grid-template-columns:1.1fr 1fr;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .manifest-copy{ padding:52px; }
+  .manifest-copy h2{ font-size:clamp(24px,2.8vw,32px); margin-top:14px; }
+  .manifest-copy p{ margin-top:16px; font-size:15.5px; line-height:1.65; color:rgba(10,31,56,0.72); max-width:42ch; }
+  .manifest-form{ display:flex; gap:10px; margin-top:28px; flex-wrap:wrap; }
+  .manifest-form input[type="email"]{
+    flex:1; min-width:200px;
+    padding:14px 18px; border-radius:999px; border:1.5px solid var(--line);
+    font-family:var(--sans); font-size:14.5px; outline:none; transition:border-color .2s ease;
+  }
+  .manifest-form input[type="email"]:focus{ border-color:var(--blue-500); }
+  .manifest-note{ margin-top:14px; font-family:var(--mono); font-size:11.5px; color:rgba(10,31,56,0.5); }
+  .manifest-side{
+    position:relative;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.5) 0 14px, transparent 14px 28px),
+      linear-gradient(160deg, var(--blue-500), var(--blue-900));
+    display:flex; align-items:center; justify-content:center; padding:40px;
+  }
+  .manifest-side .stub{
+    background:rgba(255,255,255,0.12); border:2px dashed rgba(255,255,255,0.6);
+    border-radius:16px; padding:26px; text-align:center; color:#fff;
+    backdrop-filter:blur(3px);
+  }
+  .manifest-side .stub .plane-big{ font-size:34px; display:block; margin-bottom:10px; transform:rotate(45deg); }
+  .manifest-side .stub b{ font-family:var(--serif); font-size:19px; display:block; }
+  .manifest-side .stub span{ font-family:var(--mono); font-size:11px; opacity:.8; }
+
+  /* ============ FOOTER ============ */
+  footer.site{ background:var(--ink); color:#fff; padding:70px 0 26px; }
+  .foot-top{ display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:48px; padding-bottom:48px; border-bottom:1px solid rgba(255,255,255,0.12); }
+  .foot-brand .brand{ color:#fff; }
+  .foot-brand p{ margin-top:16px; font-size:14.5px; line-height:1.65; color:rgba(255,255,255,0.6); max-width:34ch; }
+  .foot-avatar{ width:52px; height:52px; border-radius:50%; margin-top:20px; }
+  .foot-col h4{ font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--sky-300); margin:0 0 18px; }
+  .foot-col a{ display:block; font-size:14.5px; color:rgba(255,255,255,0.75); margin-bottom:12px; transition:color .2s ease; }
+  .foot-col a:hover{ color:#fff; }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:24px; font-size:13px; color:rgba(255,255,255,0.45); flex-wrap:wrap; gap:12px; }
+  .foot-bottom .mono{ font-family:var(--mono); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:980px){
+    .nav-links{
+      display:none;
+      position:absolute; top:100%; left:0; right:0; z-index:90;
+      flex-direction:column; align-items:stretch; gap:2px;
+      background:#fff; border-bottom:1px solid var(--line);
+      padding:10px 20px 18px;
+      box-shadow:0 20px 30px -20px rgba(10,31,56,0.25);
+    }
+    .nav-links.is-open{ display:flex; }
+    .nav-links a{
+      padding:13px 4px; font-size:16px; opacity:.85;
+      border-bottom:1px solid var(--line);
+    }
+    .nav-links a:last-child{ border-bottom:none; }
+    .nav-cta .btn-ghost{ display:none; }
+    .nav-cta .btn-primary{ padding:11px 18px; font-size:14px; }
+    .burger{ display:flex; }
+    .hero .wrap{ grid-template-columns:1fr; }
+    .pass-wrap{ order:-1; }
+    .about .wrap{ grid-template-columns:1fr; }
+    .about .photo-slot{ aspect-ratio:16/9; }
+    .stories-grid{ grid-template-columns:1fr; }
+    .manifest-card{ grid-template-columns:1fr; }
+    .manifest-side{ padding:32px; }
+    .foot-top{ grid-template-columns:1fr; gap:32px; }
+    .wing-banner{ height:260px; }
+  }
+  @media (max-width:768px){
+    .hero-meta{ gap:22px; }
+    .stories-grid{ gap:24px; }
+  }
+  @media (max-width:560px){
+    .wrap{ padding:0 18px; }
+    section{ padding:56px 0; }
+    .hero{ padding-top:36px !important; }
+    .brand{ font-size:18px; }
+    .boarding-pass{ grid-template-columns:1fr; }
+    .pass-main, .pass-stub{ padding:22px; }
+    .pass-main{ border-radius:20px 20px 0 0; }
+    .pass-stub{ border-radius:0 0 20px 20px; }
+    .pass-perf{ display:none; }
+    .pass-badge{ left:22px; }
+    .pass-names{ font-size:22px; }
+    .pass-grid{ grid-template-columns:1fr 1fr; gap:14px; }
+    .about-stats{ grid-template-columns:1fr; }
+    .wing-banner{ height:200px; }
+    .wing-copy h2{ max-width:100%; }
+    .manifest-copy{ padding:26px; }
+    .manifest-form{ flex-direction:column; align-stretch:stretch; }
+    .manifest-form input[type="email"]{ min-width:0; width:100%; }
+    .manifest-form .btn{ width:100%; }
+    .stamp{ width:128px; height:128px; }
+    .foot-bottom{ flex-direction:column; align-items:flex-start; }
+  }
+  @media (max-width:380px){
+    .pass-grid{ grid-template-columns:1fr; }
+    .hero-meta{ gap:16px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a href="#top" class="brand"><span class="plane">✈</span>twogether.bond</a>
+    <ul class="nav-links">
+      <li><a href="#about">The Crew</a></li>
+      <li><a href="#stories">Stories</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#manifest">Subscribe</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#manifest" class="btn btn-ghost">Join the Manifest</a>
+      <a href="#stories" class="btn btn-primary">Read Stories</a>
+    </div>
+    <button class="burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:64px;">
+    <div class="wrap">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow">A blog for two — since our first cheap flight</p>
+        <h1>Two people,<br>one boarding pass,<br><em>endless</em> departures.</h1>
+        <p class="lede">Ciejay and Satiko write down every trip before the sand leaves their shoes — beaches, backroads, and the layovers in between. Starting in the Philippines, going wherever the next fare drops.</p>
+        <div class="hero-actions">
+          <a href="#stories" class="btn btn-primary">Read the latest story</a>
+          <a href="#journey" class="btn btn-ghost">See where we've been</a>
+        </div>
+        <div class="hero-meta">
+          <div><b>38</b><span>Islands hopped</span></div>
+          <div><b>212</b><span>Passport stamps</span></div>
+          <div><b>1</b><span>Shared power bank</span></div>
+        </div>
+      </div>
+
+      <div class="pass-wrap" data-reveal>
+        <div class="boarding-pass">
+          <span class="pass-badge">BOARDING PASS</span>
+          <div class="pass-main">
+            <div class="pass-top">
+              <span class="pass-brand">TWOGETHER AIR</span>
+              <span class="pass-tag">CLASS: TRAVEL LOG</span>
+            </div>
+            <p class="pass-names">Ciejay &amp; Satiko</p>
+            <div class="pass-grid">
+              <div class="pass-field"><label>Flight No.</label><div>TWG · 002</div></div>
+              <div class="pass-field"><label>Seat</label><div>2 Together</div></div>
+              <div class="pass-field"><label>Gate</label><div>Always Open</div></div>
+              <div class="pass-field"><label>Boarding</label><div>Whenever, Wherever</div></div>
+            </div>
+            <div class="pass-route">
+              <span>HERE</span>
+              <span class="line"></span>
+              <span>TWOGETHER</span>
+            </div>
+          </div>
+          <div class="pass-divider"><div class="pass-perf"></div></div>
+          <div class="pass-stub">
+            <div>
+              <span class="pass-brand on-dark">STUB</span>
+              <div style="margin-top:18px;">
+                <label>Destination</label>
+                <div class="val">Philippines ✦ &amp; beyond</div>
+                <label>Terms</label>
+                <div class="val" style="font-weight:500; font-size:13px; opacity:.85;">Two-way ticket. No return date.</div>
+              </div>
+            </div>
+            <div class="barcode"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="photo-slot" data-reveal>
+        <span>Couple picture here<br>— Ciejay &amp; Satiko, portrait, 4:5 —</span>
+      </div>
+      <div data-reveal>
+        <p class="eyebrow">The crew</p>
+        <h2>Two passports,<br>one shared window seat.</h2>
+        <p style="margin-top:20px; font-size:16.5px; line-height:1.7; color:rgba(10,31,56,0.75); max-width:52ch;">
+          We're Ciejay and Satiko — a couple who started dating over cheap seat sales and questionable jeepney directions. Somewhere between the third missed ferry and the first free upgrade, we started keeping notes, so the stories wouldn't turn into "you had to be there." This is that notebook, made public.
+        </p>
+        <p style="margin-top:14px; font-size:16.5px; line-height:1.7; color:rgba(10,31,56,0.75); max-width:52ch;">
+          Expect real budgets, real arguments about aircon, and a lot of white-sand beaches we'll probably never stop writing about.
+        </p>
+        <div class="about-stats">
+          <div class="stat"><b>04</b><span>Years exploring</span></div>
+          <div class="stat"><b>17</b><span>Provinces covered</span></div>
+          <div class="stat"><b>∞</b><span>More on the list</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WING BANNER -->
+  <div class="wing-banner">
+    <img
+      src="https://images.pexels.com/photos/12916439/pexels-photo-12916439.jpeg?auto=compress&cs=tinysrgb&w=1800"
+      srcset="https://images.pexels.com/photos/12916439/pexels-photo-12916439.jpeg?auto=compress&cs=tinysrgb&w=700 700w,
+              https://images.pexels.com/photos/12916439/pexels-photo-12916439.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w,
+              https://images.pexels.com/photos/12916439/pexels-photo-12916439.jpeg?auto=compress&cs=tinysrgb&w=1800 1800w"
+      sizes="100vw"
+      loading="lazy" decoding="async"
+      alt="View of an airplane wing above the clouds">
+    <div class="wing-copy">
+      <div class="wrap">
+        <p class="eyebrow">Currently: mid-air</p>
+        <h2>Next stop is always the best part.</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORIES -->
+  <section id="stories">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Fresh off the memory card</p>
+        <h2>Featured stories</h2>
+        <p>The trips we keep telling people about, whether they ask or not.</p>
+      </div>
+
+      <div class="stories-grid">
+        <article class="postcard" data-reveal>
+          <div class="thumb">
+            <img
+              src="https://images.pexels.com/photos/29266611/pexels-photo-29266611.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              srcset="https://images.pexels.com/photos/29266611/pexels-photo-29266611.jpeg?auto=compress&cs=tinysrgb&w=500 500w,
+                      https://images.pexels.com/photos/29266611/pexels-photo-29266611.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                      https://images.pexels.com/photos/29266611/pexels-photo-29266611.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w"
+              sizes="(max-width:980px) 100vw, 33vw"
+              loading="lazy" decoding="async"
+              alt="Sunset over Boracay beach with palm trees and sailboats">
+            <span class="stamp">Malay<br>Aklan</span>
+          </div>
+          <div class="body">
+            <div class="meta">Boracay · Beach diary</div>
+            <h3>White Beach, one more time</h3>
+            <p>We keep saying we'll skip Boracay next trip. We never do. A rundown of the sandbar walk, the sunset spot nobody photographs, and where to eat after.</p>
+            <a href="#" class="read">Read the story</a>
+          </div>
+        </article>
+
+        <article class="postcard" data-reveal>
+          <div class="thumb">
+            <img
+              src="https://images.pexels.com/photos/13874296/pexels-photo-13874296.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              srcset="https://images.pexels.com/photos/13874296/pexels-photo-13874296.jpeg?auto=compress&cs=tinysrgb&w=500 500w,
+                      https://images.pexels.com/photos/13874296/pexels-photo-13874296.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                      https://images.pexels.com/photos/13874296/pexels-photo-13874296.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w"
+              sizes="(max-width:980px) 100vw, 33vw"
+              loading="lazy" decoding="async"
+              alt="Aerial view of boats in a turquoise lagoon in El Nido, Palawan">
+            <span class="stamp">El Nido<br>Palawan</span>
+          </div>
+          <div class="body">
+            <div class="meta">Palawan · Island hopping</div>
+            <h3>Chasing lagoons in El Nido</h3>
+            <p>Four tours, one sunburn, and the lagoon that made Satiko cry a little. Everything we'd tell a first-timer about Bacuit Bay.</p>
+            <a href="#" class="read">Read the story</a>
+          </div>
+        </article>
+
+        <article class="postcard" data-reveal>
+          <div class="thumb">
+            <img
+              src="https://images.pexels.com/photos/31573603/pexels-photo-31573603.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              srcset="https://images.pexels.com/photos/31573603/pexels-photo-31573603.jpeg?auto=compress&cs=tinysrgb&w=500 500w,
+                      https://images.pexels.com/photos/31573603/pexels-photo-31573603.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                      https://images.pexels.com/photos/31573603/pexels-photo-31573603.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w"
+              sizes="(max-width:980px) 100vw, 33vw"
+              loading="lazy" decoding="async"
+              alt="Turquoise water framed by coconut trees on a beach in Boracay">
+            <span class="stamp">Boracay<br>Station 2</span>
+          </div>
+          <div class="body">
+            <div class="meta">Boracay · Budget notes</div>
+            <h3>The two-of-us budget breakdown</h3>
+            <p>What a five-day island trip actually cost us — flights, food, that one splurge dinner — laid out with zero shame.</p>
+            <a href="#" class="read">Read the story</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="stories-foot">
+        <a href="#" class="btn btn-ghost">See every story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY / STAMPS -->
+  <section class="journey" id="journey">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Passport check</p>
+        <h2>Where we've landed so far</h2>
+        <p>Every stamp is a story waiting to be written up. Scroll for the full trail.</p>
+      </div>
+      <div class="stamp-row" data-reveal>
+        <div class="stamp"><span class="code">BOR</span><span class="name">Boracay</span><span class="yr">2022</span></div>
+        <div class="stamp"><span class="code">ENI</span><span class="name">El Nido</span><span class="yr">2022</span></div>
+        <div class="stamp"><span class="code">SGO</span><span class="name">Siargao</span><span class="yr">2023</span></div>
+        <div class="stamp"><span class="code">CEB</span><span class="name">Cebu</span><span class="yr">2023</span></div>
+        <div class="stamp"><span class="code">BOH</span><span class="name">Bohol</span><span class="yr">2024</span></div>
+        <div class="stamp"><span class="code">COR</span><span class="name">Coron</span><span class="yr">2024</span></div>
+        <div class="stamp"><span class="code">BAG</span><span class="name">Baguio</span><span class="yr">2025</span></div>
+        <div class="stamp"><span class="code">???</span><span class="name">Next up</span><span class="yr">TBD</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="manifest" id="manifest">
+    <div class="wrap">
+      <div class="manifest-card" data-reveal>
+        <div class="manifest-copy">
+          <p class="eyebrow">Don't miss the next flight</p>
+          <h2>Join the flight manifest</h2>
+          <p>One email whenever we post a new trip. No spam, no seat-back kicking, unsubscribe whenever.</p>
+          <form class="manifest-form" onsubmit="return false;">
+            <input type="email" placeholder="you@email.com" required aria-label="Email address">
+            <button type="submit" class="btn btn-primary">Add me</button>
+          </form>
+          <p class="manifest-note">✦ 1,204 fellow travelers already on the list</p>
+        </div>
+        <div class="manifest-side">
+          <div class="stub">
+            <span class="plane-big">✈</span>
+            <b>Confirmed</b>
+            <span>Seat 2GETHER · Boarding always</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="brand"><span class="plane">✈</span>twogether.bond</a>
+        <p>A travel journal written by two people, one shared itinerary at a time. Based in the Philippines, headed everywhere else.</p>
+        <div class="photo-slot foot-avatar"><span style="font-size:8px; padding:2px;">Photo</span></div>
+      </div>
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <a href="#about">The Crew</a>
+        <a href="#stories">Stories</a>
+        <a href="#journey">Journey Map</a>
+        <a href="#manifest">Subscribe</a>
+      </div>
+      <div class="foot-col">
+        <h4>Find us</h4>
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="#">YouTube</a>
+        <a href="#">hello@twogether.bond</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 twogether.bond — Ciejay &amp; Satiko. All stories are true. Most flights were delayed.</span>
+      <span class="mono">MNL → ∞</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile menu toggle
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+  const setMenu = (open) => {
+    navLinks.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+  };
+  burger.addEventListener('click', () => {
+    setMenu(!navLinks.classList.contains('is-open'));
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => setMenu(false));
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 980) setMenu(false);
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+  }
+</script>
+
+</body>
+</html>
